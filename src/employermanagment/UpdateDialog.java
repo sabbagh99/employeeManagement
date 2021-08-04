@@ -37,6 +37,7 @@ public class UpdateDialog extends javax.swing.JDialog {
      */
     public UpdateDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Update Data");
         initComponents();
         txtName.setText(updatedUser.getName());
         txtAddress.setText(updatedUser.getAddress());

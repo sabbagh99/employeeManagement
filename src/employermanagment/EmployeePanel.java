@@ -5,6 +5,8 @@
  */
 package employermanagment;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,18 +14,33 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 /**
- *
  * @author user
  */
 public class EmployeePanel extends javax.swing.JPanel {
+
+    public static User updatedUser;
+    public static javax.swing.JTable jTable1;
+    private long id;
+    private String tblDepatment = "";
+    private List<User> list;
+    private DefaultTableModel tableModel;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnView;
+    private javax.swing.JComboBox<String> cmbDepartment;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JFormattedTextField txtId;
+    private javax.swing.JTextField txtName;
 
     /**
      * Creates new form employeePanel
@@ -79,7 +96,7 @@ public class EmployeePanel extends javax.swing.JPanel {
         add(txtName);
         txtName.setBounds(140, 60, 82, 26);
 
-        cmbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "IT", "Manegment", "Sales" }));
+        cmbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"", "IT", "Manegment", "Sales"}));
         add(cmbDepartment);
         cmbDepartment.setBounds(140, 100, 120, 26);
 
@@ -93,19 +110,19 @@ public class EmployeePanel extends javax.swing.JPanel {
         btnSearch.setBounds(414, 100, 79, 29);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][]{
 
-            },
-            new String [] {
-                "ID", "Name", "Department"
-            }
+                },
+                new String[]{
+                        "ID", "Name", "Department"
+                }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            boolean[] canEdit = new boolean[]{
+                    false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -195,13 +212,49 @@ public class EmployeePanel extends javax.swing.JPanel {
             list = addDialog.read(file);
             tableModel = (DefaultTableModel) jTable1.getModel();
             tableModel.setRowCount(0);
-            for (User oneUser : list) {
 
-                if ((checkIdText() == oneUser.getId()) || (txtName.getText().equals(oneUser.getName())) || (cmbDepartment.getSelectedItem().toString().equals(oneUser.getDepartment()))) {
-                    String userData[] = {String.valueOf(oneUser.getId()), oneUser.getName(), oneUser.getDepartment()};
-                    tableModel.addRow(userData);
+            if (!txtId.getText().isEmpty()) {
+                for (User oneUser : list) {
+                    if ((checkIdText() == oneUser.getId())) {
+                        String userData[] = {String.valueOf(oneUser.getId()), oneUser.getName(), oneUser.getDepartment()};
+                        tableModel.addRow(userData);
+                        break;
+
+                    }
+                }
+
+
+            } else if (!(txtName.getText().isEmpty()) && !(cmbDepartment.getSelectedItem().toString().equals(""))) {
+                for (User oneUser : list) {
+                    if ((cmbDepartment.getSelectedItem().toString().equals(oneUser.getDepartment())) && (txtName.getText().equals(oneUser.getName()))) {
+
+                        String userData[] = {String.valueOf(oneUser.getId()), oneUser.getName(), oneUser.getDepartment()};
+                        tableModel.addRow(userData);
+                    }
 
                 }
+            } else {
+                for (User oneUser : list) {
+
+                    if ((checkIdText() == oneUser.getId())) {
+                        String userData[] = {String.valueOf(oneUser.getId()), oneUser.getName(), oneUser.getDepartment()};
+                        tableModel.addRow(userData);
+                        break;
+
+                    } else if ((txtName.getText().equals(oneUser.getName()))) {
+                        String userData[] = {String.valueOf(oneUser.getId()), oneUser.getName(), oneUser.getDepartment()};
+                        tableModel.addRow(userData);
+                    } else if ((cmbDepartment.getSelectedItem().toString().equals(oneUser.getDepartment()))) {
+                        String userData[] = {String.valueOf(oneUser.getId()), oneUser.getName(), oneUser.getDepartment()};
+                        tableModel.addRow(userData);
+
+                    }
+                }
+            }
+            if(tableModel.getRowCount()==0){
+
+                    JOptionPane.showMessageDialog(this,"There's no matching information");
+
             }
 
         } catch (Exception ex) {
@@ -230,7 +283,6 @@ public class EmployeePanel extends javax.swing.JPanel {
                     updatedUser.setStatus(list.get(i).getStatus());
                     updatedUser.setGender(list.get(i).getGender());
                     updatedUser.setBarthDate(list.get(i).getBarthDate());
-
 
                     UpdateDialog updateDialog = new UpdateDialog(new javax.swing.JFrame(), true);
                     updateDialog.setBounds(200, 200, 0, 0);
@@ -327,28 +379,5 @@ public class EmployeePanel extends javax.swing.JPanel {
         oos.close();
 
     }
-
-    private long id;
-    private String tblDepatment = "";
-    private List<User> list;
-    private DefaultTableModel tableModel;
-    public static User updatedUser;
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnView;
-    private javax.swing.JComboBox<String> cmbDepartment;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    public static javax.swing.JTable jTable1;
-    private javax.swing.JFormattedTextField txtId;
-    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }
