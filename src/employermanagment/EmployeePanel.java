@@ -251,10 +251,8 @@ public class EmployeePanel extends javax.swing.JPanel {
                     }
                 }
             }
-            if(tableModel.getRowCount()==0){
-
-                    JOptionPane.showMessageDialog(this,"There's no matching information");
-
+            if (tableModel.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "There's no matching information");
             }
 
         } catch (Exception ex) {
