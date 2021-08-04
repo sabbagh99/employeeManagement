@@ -229,10 +229,7 @@ public class AddDialog extends javax.swing.JDialog {
 
                 write(file, newUser);
 
-                for (User oneUser : list) {
-                    System.out.println(oneUser);
-//                    tableModel.addRow(userData);
-                }
+                
 
                 JOptionPane.showMessageDialog(this, "Add Successfully");
                 dispose();
